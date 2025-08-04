@@ -46,7 +46,7 @@ class TestPet:
             assert response.text == "Pet not found", "Текст ошибки не совпал с ожидаемым"
 
     @allure.title("Добавление нового питомца")
-    def test_add_nonexistent_pet(self):
+    def test_add_new_pet(self):
         with allure.step("Подготовка данных для создания питомца"):
             payload = {
                 "id": 1,
@@ -69,7 +69,7 @@ class TestPet:
 
 
     @allure.title("Добавление нового питомца c полными данными")
-    def test_add_nonexistent_pet(self):
+    def test_add_new_full_pet(self):
         with allure.step("Подготовка данных для создания питомца c полными данными"):
             payload = {
                 "id": 10,
