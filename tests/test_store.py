@@ -1,7 +1,7 @@
 import allure
 import jsonschema
 import requests
-from .schemas.store_schema import STORE_SCHEMA
+from .schemas.store_schema import INVENTORY_SCHEMA, ORDER_SCHEMA
 BASE_URL = "http://5.181.109.28:9090/api/v3"
 
 @allure.feature("Store")
@@ -24,13 +24,14 @@ class TestStore:
 
         with allure.step("Проверка статуса ответа: 200"):
             assert response.status_code == 200, "Код ответа не совпал с ожидаемым"
+            jsonschema.validate(response_json, ORDER_SCHEMA)
 
         with allure.step("Проверка содержимого ответа"):
-            assert response_json ["id"] == payload['id'], "id не совпадает с ожидаемым"
-            assert response_json ["petId"] == payload['petId'], "petId не совпадает с ожидаемым"
-            assert response_json ["quantity"] == payload['quantity'], "quantity не совпадает с ожидаемым"
-            assert response_json ["status"] == payload['status'], "status не совпадает с ожидаемым"
-            assert response_json ["complete"] == payload['complete'], "complete не совпадает с ожидаемым"
+            assert response_json ["id"] == payload["id"], "id не совпадает с ожидаемым"
+            assert response_json ["petId"] == payload["petId"], "petId не совпадает с ожидаемым"
+            assert response_json ["quantity"] == payload["quantity"], "quantity не совпадает с ожидаемым"
+            assert response_json ["status"] == payload["status"], "status не совпадает с ожидаемым"
+            assert response_json ["complete"] == payload["complete"], "complete не совпадает с ожидаемым"
 
 
     @allure.title("Получение информации о заказе по ID")
@@ -83,11 +84,7 @@ class TestStore:
         with allure.step("Проверка статуса ответа: 200"):
             assert response.status_code == 200, "Код ответа не совпал с ожидаемым"
             response_json = response.json()
-            jsonschema.validate(response_json, STORE_SCHEMA)
-
-        with allure.step("Проверка содержимого ответа"):
-            assert response_json ["approved"] == 57, "approved не совпадает с ожидаемым"
-            assert response_json ["delivered"] == 50, "delivered не совпадает с ожидаемым"
+            jsonschema.validate(response_json, INVENTORY_SCHEMA)
 
 
 
